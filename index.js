@@ -7,6 +7,28 @@ let tasaInteres = 0;
 let tiempoInversion = 0;
 let contador=0;
 
+//funcion para eliminar arreglos
+function limpiar(){
+    let borrar = false
+    borrar = confirm("desea borrar los escenarios?");
+    if (borrar == true){
+        borrar = confirm("desea borrar todos los escenarios?");
+        if (borrar == true){ 
+            escenarios.splice(0);
+            console.log(escenarios);
+        }else{
+            let borr =0; 
+            borr = parseInt(prompt("que escenario desea borrar 1, 2 o 3")-1);
+            console.log(borr);
+            escenarios.splice((borr),1);
+            console.log(escenarios);
+        }    
+    }else{
+        //no borra nada
+    }
+}
+
+
 //formula de interes compuesto
 function calcular(capital,interes,tiempo){
     return capital * ((1+interes)**tiempo);
@@ -21,7 +43,7 @@ function mostrar(capital,interes,tiempo,contador){
     escenarios[escenarios.length - 1].retorno = parseInt((escenarios[escenarios.length - 1].capital * ((1+escenarios[escenarios.length - 1].interes)**escenarios[escenarios.length -1].tiempo)/1000));
     document.write("<p> ESCENARIO " + contador + " En " + tiempo+ " años usted obtendra: $"+ formato(calcular(capital,interes,tiempo))+"</p>");
 }
-// funcion para mandar los datos a la web
+// funcion para mandar los datos ingresador por prompt a la web
 function printPant(){
     document.write("<div><p>Capital a invertir: " + escenarios[escenarios.length - 1].capital + "<br>");
     document.write("Interes anual: " + (escenarios[escenarios.length - 1].interes*100)+"%" + "<br>");
@@ -77,3 +99,4 @@ while (contador < 3) {
 } 
 
 ingresoValores();
+limpiar();
