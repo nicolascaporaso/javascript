@@ -41,20 +41,46 @@ const formato = function(number){
 //funcion para mostrar resultados de escenarios en pantalla
 function mostrar(capital,interes,tiempo,contador){
     escenarios[escenarios.length - 1].retorno = parseInt((escenarios[escenarios.length - 1].capital * ((1+escenarios[escenarios.length - 1].interes)**escenarios[escenarios.length -1].tiempo)/1000));
-    document.write("<p> ESCENARIO " + contador + " En " + tiempo+ " años usted obtendra: $"+ formato(calcular(capital,interes,tiempo))+"</p>");
+    return ganado= `Usted obtuvo ${formato(calcular(capital,interes,tiempo))}`;
 }
 // funcion para mandar los datos ingresador por prompt a la web
 function printPant(){
-    document.write("<div><p>Capital a invertir: " + escenarios[escenarios.length - 1].capital + "<br>");
-    document.write("Interes anual: " + (escenarios[escenarios.length - 1].interes*100)+"%" + "<br>");
-    document.write("Años de inversion: " + escenarios[escenarios.length - 1].tiempo + "</p>");
-    mostrar(escenarios[escenarios.length - 1].capital,escenarios[escenarios.length - 1].interes,escenarios[escenarios.length - 1].tiempo,contador);
+    //creo el escenario en un div
+    let div = document.getElementById("escenarios");
+    let mostrarEscenario = document.createElement("div");
+    mostrarEscenario.setAttribute("id", "escenario"+contador);
+    mostrarEscenario.innerHTML = "<h1>Escenario" + contador + "</h1>" ;
+    div.append(mostrarEscenario);
+// agrego parrafos con resultados
+//capital
+    contenedor = document.getElementById("escenario"+contador);
+    mostrarEscenario = document.createElement("p");
+    mostrarEscenario.innerHTML = "Capital a invertir: " + escenarios[escenarios.length - 1].capital ;
+    contenedor.append(mostrarEscenario);
+// interes
+    mostrarEscenario = document.createElement("p");
+    mostrarEscenario.innerHTML = "Interes anual: " + (escenarios[escenarios.length - 1].interes*100)+"%";
+    contenedor.append(mostrarEscenario);
+//tiempo
+    mostrarEscenario = document.createElement("p");
+    mostrarEscenario.innerHTML = "Años de inversion: " + escenarios[escenarios.length - 1].tiempo;
+    contenedor.append(mostrarEscenario);
+// total
+    mostrarEscenario = document.createElement("p");
+    mostrarEscenario.innerHTML =  mostrar(escenarios[escenarios.length - 1].capital,escenarios[escenarios.length - 1].interes,escenarios[escenarios.length - 1].tiempo,contador);
+    contenedor.append(mostrarEscenario);
 }
 //calcula cual es el escenario mas conveniente
 function mayorRetorno(){
     const retornoMax = Math.max(escenarios[0].retorno, escenarios[1].retorno, escenarios[2].retorno);
     const escenarioMax = escenarios.find(item => item.retorno === retornoMax);
-    document.write("<p>El RETORNO de capital mas grande es del escenario: " + (escenarioMax.id+1) + " con "+ escenarioMax.tiempo + " años de inversion</p>");
+    
+    let div = document.getElementById("escenarios");
+    let mostrarEscenario = document.createElement("h2");
+    mostrarEscenario.setAttribute("id", "resultado");
+    mostrarEscenario.innerHTML = "El retorno de capital mas grande es del escenario: " + (escenarioMax.id+1) + " con "+ escenarioMax.tiempo + " años de inversion" ;
+    div.append(mostrarEscenario);
+
     console.log(escenarios);
 }
 
@@ -100,3 +126,4 @@ while (contador < 3) {
 
 ingresoValores();
 limpiar();
+
