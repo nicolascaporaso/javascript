@@ -10,19 +10,11 @@ let contador=0;
 //funcion para eliminar arreglos
 function limpiar(){
     let borrar = false
-    borrar = confirm("desea borrar los escenarios?");
-    if (borrar == true){
-        borrar = confirm("desea borrar todos los escenarios?");
-        if (borrar == true){ 
-            escenarios.splice(0);
-            console.log(escenarios);
-        }else{
-            let borr =0; 
-            borr = parseInt(prompt("que escenario desea borrar 1, 2 o 3")-1);
-            console.log(borr);
-            escenarios.splice((borr),1);
-            console.log(escenarios);
-        }    
+    borrar = confirm("desea borrar todos los escenarios?");
+    if (borrar == true){ 
+        escenarios.splice(0);
+        console.log(escenarios);
+        location.reload();
     }else{
         //no borra nada
     }
@@ -40,7 +32,7 @@ const formato = function(number){
 };
 //funcion para mostrar resultados de escenarios en pantalla
 function mostrar(capital,interes,tiempo,contador){
-    escenarios[escenarios.length - 1].retorno = parseInt((escenarios[escenarios.length - 1].capital * ((1+escenarios[escenarios.length - 1].interes)**escenarios[escenarios.length -1].tiempo)/1000));
+    escenarios[escenarios.length - 1].retorno = parseInt((escenarios[escenarios.length - 1].capital * ((1+escenarios[escenarios.length - 1].interes)**escenarios[escenarios.length -1].tiempo)));
     return ganado= `Usted obtuvo ${formato(calcular(capital,interes,tiempo))}`;
 }
 // funcion para mandar los datos ingresador por prompt a la web
@@ -72,16 +64,41 @@ function printPant(){
 }
 //calcula cual es el escenario mas conveniente
 function mayorRetorno(){
-    const retornoMax = Math.max(escenarios[0].retorno, escenarios[1].retorno, escenarios[2].retorno);
-    const escenarioMax = escenarios.find(item => item.retorno === retornoMax);
-    
+    let mayor = escenarios[0].retorno/escenarios[0].tiempo;
+    let time = escenarios[0].tiempo;
+    let retor=0;
+    escenarios.forEach(function(numero){
+        if ((numero.retorno/numero.tiempo > mayor) && (numero.tiempo < time)){ 
+            mayor = numero.retorno/numero.tiempo
+            retor = numero;
+        }else{
+            if (numero.retorno/numero.tiempo == mayor){
+                if (numero.tiempo < time){
+                    time = escenarios[0].tiempo;
+                    mayor = numero.retor/numero.tiempo;
+                }
+            }else{
+                if (numero.tiempo < time){
+                    time = escenarios[0].tiempo;
+                    mayor = numero.retorno/numero.tiempo;
+                }else{
+                    retor= escenarios[0];
+                }    
+            }
+        }
+    })
+
+
+    console.log(mayor);
+    console.log(time);
+    console.log(retor);
+
     let div = document.getElementById("escenarios");
     let mostrarEscenario = document.createElement("h2");
     mostrarEscenario.setAttribute("id", "resultado");
-    mostrarEscenario.innerHTML = "El retorno de capital mas grande es del escenario: " + (escenarioMax.id+1) + " con "+ escenarioMax.tiempo + " años de inversion" ;
+    mostrarEscenario.innerHTML = "La mejor opcion es el escenario  " + (retor.id+1) + " con "+ retor.tiempo + " años de inversion" + " y un retorno total de: " + retor.retorno + "<br> buscamos el mayor retorno en el menor tiempo posible";
     div.append(mostrarEscenario);
 
-    console.log(escenarios);
 }
 
 //funcion para ingreso de datos
@@ -97,33 +114,39 @@ function ingresoValores(){
         }
     }
 
-while (contador < 3) {
+        let contenedor = document.getElementById("capital");
+        capitalInicial= parseInt(contenedor.value); //guardo como numero en variable
 
-     do { //validacion de ingreso de datos como numero
-         capitalInicial= parseInt(prompt("Ingrese la suma inicial a invertir ESCENARIO " + (contador+1) )); //guardo como numero en variable
-    } while (isNaN(capitalInicial));
-
-     do { //validacion de ingreso de datos como numero
-         tasaInteres= parseFloat(prompt("Ingrese la tasa de interes anual a percibir (1% a 100%) ESCENARIO " + (contador+1)));    //guardo como numero decimal en variable
+//validacion de ingreso de datos como numero
+        contenedor = document.getElementById("interes");
+         tasaInteres= parseFloat(contenedor.value);    //guardo como numero decimal en variable
          tasaInteres=tasaInteres/100; //lo divido por 100 para aplicarlo en la formula de interes compuesto
-    } while (isNaN(tasaInteres));
 
-     do { //validacion de ingreso de datos como numero
-         tiempoInversion= parseInt(prompt("Ingrese la cantidad de años que va mantener la inversion ESCENARIO " + (contador+1))); //guardo como numero en variable
-    } while (isNaN(tiempoInversion));
+ //validacion de ingreso de datos como numero
+        contenedor = document.getElementById("años");
+         tiempoInversion= parseInt(contenedor.value); //guardo como numero en variable
+
 
     //iteraccion en array de objetos
     escenarios.push (new Escenario(contador,capitalInicial,tasaInteres,tiempoInversion));
-    contador ++;
+    contador++
 
+    console.log(escenarios);
     //muestra datos en pagina web.
     printPant();
-    }
+    
 
     //llama a funcion de calculo de escenario
-    mayorRetorno();
+    
 } 
 
-ingresoValores();
-limpiar();
+let boton = document.getElementById("btnPrincipal");
+boton.addEventListener("click", ingresoValores);
+
+let boton2 = document.getElementById("retorno");
+boton2.addEventListener("click", mayorRetorno);
+
+let borra = document.getElementById("borra");
+borra.addEventListener("click", limpiar);
+
 

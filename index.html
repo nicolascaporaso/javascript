@@ -12,9 +12,25 @@
     <h1>Bienvenido a la calculadora de interes compuesto online</h1>
     <h2>Ingrese el monto de su capital, la percepcion de interes y los años de inversion, para saber cuanto Ganara, mediante la reinversion de las ganancias.</h2>
   </header>
-  <div id="escenarios">
+  <main>
+    <div class="botones">
+      <button id="btnPrincipal">Cargar Escenario</button>
+      <button id="retorno">Mayor Retorno</button> 
+      <button id="borra">Borrar Escenario</button>
+    </div>
     
-  </div>
+    <form id="formulario">
+      <p>Capital Inicial</p>
+      <input id="capital" type="number" />
+      <p>Interes Anual</p>
+      <input id="interes" type="number" />
+      <p>Años de Inversion</p>
+      <input id="años" type="number" />
+    </form>
+    <div id="escenarios">
+    </div>
+  </main>
+  
   
   <script src="index.js"></script>  
 </body>

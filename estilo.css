@@ -33,3 +33,19 @@ p{
     margin-left: auto;
     margin-right: auto;
 }
+
+form {
+    text-align: center;
+}
+
+.botones {
+    width: 30%;
+    display: inline-flex;
+    flex-direction: column;
+    
+}
+
+main{
+    width: 100%;
+    text-align: center;
+}
